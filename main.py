@@ -3,36 +3,38 @@ name: Build Siginak APK
 on:
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v5
+      - name: Kodlari Al
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v5
+      - name: Java Kurulumu (Android Derleyicisi İçin)
+        uses: actions/setup-java@v4
         with:
-          distribution: zulu
+          distribution: 'zulu'
           java-version: '17'
 
-      - uses: actions/setup-python@v6
+      - name: Python Kurulumu
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Flutter Kur
-        run: |
-          git clone https://github.com/flutter/flutter.git --depth 1 -b stable $HOME/flutter
-          echo "$HOME/flutter/bin" >> $GITHUB_PATH
-
-      - name: Paketleri Kur
+      - name: Flet ve Gerekli Kütüphaneleri Yükle
         run: |
           python -m pip install --upgrade pip
           pip install flet fpdf
 
-      - name: APK Derle
-        run: flet build apk
+      - name: APK Derleme İşlemini Başlat
+        # "yes |" ifadesi robotun sorulara otomatik "y" (evet) cevabı vermesini sağlar
+        run: yes | flet build apk
 
-      - uses: actions/upload-artifact@v5
+      - name: Üretilen APK'yı İndirmeye Hazırla
+        uses: actions/upload-artifact@v4
         with:
           name: siginak-kontrol-apk
           path: build/apk/
