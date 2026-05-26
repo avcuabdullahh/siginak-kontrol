@@ -3,7 +3,6 @@ name: Build Siginak APK
 on:
   workflow_dispatch:
 
-# GitHub'a yeni Node.js 24 altyapısını kullanmasını zorunlu kılıyoruz (Uyarıyı çözen kısım)
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
