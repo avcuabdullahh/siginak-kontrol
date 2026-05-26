@@ -8,17 +8,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v5
 
-      - name: Java
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: zulu
           java-version: '17'
 
-      - name: Python
-        uses: actions/setup-python@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
@@ -27,7 +24,7 @@ jobs:
           git clone https://github.com/flutter/flutter.git --depth 1 -b stable $HOME/flutter
           echo "$HOME/flutter/bin" >> $GITHUB_PATH
 
-      - name: Paketler
+      - name: Paketleri Kur
         run: |
           python -m pip install --upgrade pip
           pip install flet fpdf
@@ -35,8 +32,7 @@ jobs:
       - name: APK Derle
         run: flet build apk
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: siginak-kontrol-apk
           path: build/apk/
