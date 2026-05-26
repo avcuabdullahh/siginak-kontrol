@@ -9,35 +9,39 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Kodlari Al
+      - name: Repo Checkout
         uses: actions/checkout@v4
 
-      - name: Java Kurulumu (Android Derleyicisi İçin)
+      - name: Java 17 Kur
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: zulu
           java-version: '17'
 
-      - name: Flutter Kurulumu (Flet Altyapısı İçin)
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-
-      - name: Python Kurulumu
+      - name: Python Kur
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Flet ve Gerekli Kütüphaneleri Yükle
+      - name: Flutter Manuel Kurulum
+        run: |
+          git clone https://github.com/flutter/flutter.git --depth 1 -b stable $HOME/flutter
+          echo "$HOME/flutter/bin" >> $GITHUB_PATH
+
+      - name: Flutter Kontrol
+        run: flutter doctor
+
+      - name: Flet Kur
         run: |
           python -m pip install --upgrade pip
           pip install flet fpdf
 
-      - name: APK Derleme İşlemini Başlat
+      - name: APK Derle
         run: flet build apk
 
-      - name: Üretilen APK'yı İndirmeye Hazırla
+      - name: APK Upload
         uses: actions/upload-artifact@v4
         with:
           name: siginak-kontrol-apk
