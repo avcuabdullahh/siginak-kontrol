@@ -1,0 +1,41 @@
+name: Build Siginak APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodlari Al
+        uses: actions/checkout@v4
+
+      - name: Java Kurulumu (Android Derleyicisi İçin)
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Flutter Kurulumu (Flet Altyapısı İçin)
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Python Kurulumu
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Flet ve Gerekli Kütüphaneleri Yükle
+        run: |
+          python -m pip install --upgrade pip
+          pip install flet fpdf
+
+      - name: APK Derleme İşlemini Başlat
+        run: flet build apk
+
+      - name: Üretilen APK'yı İndirmeye Hazırla
+        uses: actions/upload-artifact@v4
+        with:
+          name: siginak-kontrol-apk
+          path: build/apk/
