@@ -30,8 +30,8 @@ jobs:
           pip install flet fpdf
 
       - name: APK Derleme İşlemini Başlat
-        # "yes |" ifadesi robotun sorulara otomatik "y" (evet) cevabı vermesini sağlar
-        run: yes | flet build apk
+        # Robota onay sorusuna otomatik olarak "y" cevabını verip devam etmesini söyler
+        run: echo "y" | flet build apk
 
       - name: Üretilen APK'yı İndirmeye Hazırla
         uses: actions/upload-artifact@v4
